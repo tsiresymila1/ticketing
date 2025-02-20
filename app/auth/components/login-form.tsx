@@ -1,40 +1,78 @@
 "use client";
 
+import FormError from "@/components/form-error";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+    email: yup.string().email("Invalid email").required("Email is required"),
+    password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+});
 
 export default function LoginForm() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+
+    const router = useRouter()
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
+    const onSubmit = async (data: { email: string; password: string }) => {
         const res = await signIn("credentials", {
             redirect: false,
-            email: formData.get("email"),
-            password: formData.get("password"),
+            email: data.email,
+            password: data.password,
         });
 
         if (res?.error) setError("Invalid credentials");
-        else window.location.href = "/dashboard";
-    }
+        else router.replace("/admin");
+    };
 
     return (
         <div className="flex flex-col items-center justify-center">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-4">
                 <Card className="min-w-[400px] py-8">
                     <CardHeader>
                         <CardTitle>Login</CardTitle>
-                        <CardDescription>Enter your credentials for logins</CardDescription>
+                        <CardDescription>Enter your credentials for login</CardDescription>
                     </CardHeader>
-                    <CardContent className="w-auto flex flex-col gap-4">
-                        <Input name="email" type="email" required placeholder="Email" />
-                        <Input name="password" type="password" required placeholder="Password" />
-                        {error && <p className="text-red-500">{error}</p>}
-                        <Button type="submit" >Login</Button>
+                    <CardContent className="w-auto flex flex-col gap-8">
+                        {error && <FormError>{error}</FormError>}
+                        <div className="flex flex-col gap-4">
+                            <div>
+                                <Input {...register("email")} autoComplete="off" type="email" placeholder="Email" />
+                                {errors.email && <FormError>{errors.email.message}</FormError>}
+                            </div>
+                            <div>
+                                <div className="relative w-full">
+                                    <Input {...register("password")} autoComplete="off" type={showPassword ? "text" : "password"} placeholder="Password" />
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                    >
+                                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    </Button>
+                                </div>
+                                {errors.password && <FormError>{errors.password.message}</FormError>}
+                            </div>
+                        </div>
+                        <Button type="submit">Login</Button>
                     </CardContent>
                 </Card>
             </form>

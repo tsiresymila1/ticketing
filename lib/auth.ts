@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import argon2 from "argon2";
+import bcrypt from 'bcryptjs';
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -14,7 +14,6 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("Here:::", credentials)
         if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
@@ -23,7 +22,14 @@ export const authOptions: AuthOptions = {
 
         if (!user) return null;
 
-        const isValid = await argon2.verify(
+        const isValid =  await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
+
+        console.log(
+          "Is valid :::",
+          isValid,
           user.password,
           credentials.password
         );
@@ -36,6 +42,7 @@ export const authOptions: AuthOptions = {
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/auth/login",
-  }
+    signIn: "/auth",
+    signOut: "/auth",
+  },
 };

@@ -1,12 +1,18 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { Button } from "@/components/ui/button";
+import { DropdownMenuItem, DropdownMenuShortcut } from "./ui/dropdown-menu";
 
 export default function LogoutButton() {
   return (
-    <Button onClick={() => signOut()} className="mt-4">
-      Logout
-    </Button>
+    <DropdownMenuItem onClick={() => signOut({
+      redirect: true,
+      callbackUrl: '/auth'
+    })
+    }>
+      Log out
+      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+    </DropdownMenuItem >
+
   );
 }

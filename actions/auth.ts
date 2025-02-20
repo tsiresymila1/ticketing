@@ -1,36 +1,19 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import argon2 from "argon2";
+import bcrypt from "bcryptjs";
+export type RegisterInput = { name: string; email: string; password: string };
 
-export async function registerUser(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const name = formData.get("name") as string;
-
-  if (!email || !password || !name) return { error: "All fields are required" };
-
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+export async function registerUser(data: RegisterInput) {
+  const existingUser = await prisma.user.findUnique({
+    where: { email: data.email },
+  });
   if (existingUser) return { error: "Email already in use" };
 
-  const hashedPassword = await argon2.hash(password);
-  await prisma.user.create({ data: { email, name, password: hashedPassword } });
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  await prisma.user.create({
+    data: { email: data.email, name: data.name, password: hashedPassword },
+  });
 
   return { success: "User registered successfully" };
 }
-
-export async function loginUser(formData: FormData) {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-  
-    if (!email || !password) return { error: "All fields are required" };
-  
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return { error: "Invalid credentials" };
-  
-    const isValid = await argon2.verify(user.password, password);
-    if (!isValid) return { error: "Invalid credentials" };
-  
-    return { success: "Valid credentials" };
-  }
-  
