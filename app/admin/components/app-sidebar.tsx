@@ -1,5 +1,7 @@
+"use client"
 import { Briefcase, ChartArea, HelpCircle, Home, KanbanSquareDashed, LucideIcon, Settings, Users2 } from "lucide-react"
 
+import { Label } from "@/components/ui/label"
 import {
     Sidebar,
     SidebarContent,
@@ -11,6 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { usePathname } from "next/navigation"
 
 
 type SideMenuType = {
@@ -41,13 +44,13 @@ const items: SideMenuType[] = [
             },
             {
                 title: "Users",
-                url: "#",
+                url: "/users",
                 icon: Users2,
             },
 
             {
                 title: "Activity",
-                url: "#",
+                url: "/activity",
                 icon: ChartArea,
             },
         ]
@@ -71,27 +74,33 @@ const items: SideMenuType[] = [
 ]
 
 export function AppSidebar() {
+    const pathname = usePathname()
+    console.log("pathname::", pathname)
     return (
         <Sidebar>
             <SidebarHeader className="py-4 ps-8">
-                <KanbanSquareDashed size={20} />
+                <div className="flex flex-row items-center gap-4">
+                    <KanbanSquareDashed size={20} />
+                    <Label className="font-bold text-md">Ticket Inc</Label>
+                </div>
             </SidebarHeader>
-            <SidebarContent className="px-4">
+            <SidebarContent className="px-4 mt-4">
                 {items.map((item, index) => {
                     return <SidebarGroup key={`group-item-${index}`}>
-                        <SidebarGroupLabel className="font-bold">Application</SidebarGroupLabel>
+                        <SidebarGroupLabel className="font-bold">{item.title}</SidebarGroupLabel>
                         <SidebarGroupContent className="flex gap-4">
                             <SidebarMenu>
-                                {item.children.map((menu, index2) => (
-                                    <SidebarMenuItem key={`item-${index}-${index2}`} className="my-1">
-                                        <SidebarMenuButton asChild className="py-2">
-                                            <a href={`${item.url}${menu.url}`} className="flex gap-5">
+                                {item.children.map((menu, index2) => {
+                                    const url = `${item.url}${menu.url}`
+                                    return (<SidebarMenuItem key={`item-${index}-${index2}`} className="my-1">
+                                        <SidebarMenuButton isActive={pathname === url} asChild className="py-2">
+                                            <a href={url} className="flex gap-5">
                                                 <menu.icon />
                                                 <span>{menu.title}</span>
                                             </a>
                                         </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
+                                    </SidebarMenuItem>)
+                                })}
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>

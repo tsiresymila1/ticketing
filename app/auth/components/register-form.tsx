@@ -4,10 +4,13 @@ import { RegisterInput, registerUser } from "@/actions/auth";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -52,16 +55,16 @@ export default function RegisterForm() {
         } else {
             setSuccess(res.success!);
             setError(null);
-            router.push("/auth");
+            router.push("/auth/login");
         }
     };
 
     return (
-        <div className="flex flex-col items-center justify-center">
-            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="w-96 space-y-4">
-                <Card className="min-w-[400px] py-8">
-                    <CardHeader>
-                        <CardTitle>Register</CardTitle>
+        <div className="flex flex-col items-center justify-center w-full ">
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-4 w-full max-w-96">
+                <div className=" py-8">
+                    <CardHeader className="text-center">
+                        <CardTitle className="text-2xl">Register</CardTitle>
                         <CardDescription>Enter your credentials for login</CardDescription>
                     </CardHeader>
                     <CardContent className="w-auto flex flex-col gap-8">
@@ -99,8 +102,19 @@ export default function RegisterForm() {
                         <Button type="submit" disabled={loading} className="w-full">
                             {loading ? "Registering..." : "Register"}
                         </Button>
+                        <div className="flex gap-4 justify-center items-center">
+                            <Separator className="flex-1" />
+                            <Label>OR</Label>
+                            <Separator className="flex-1" />
+                        </div>
+                        <div className="flex justify-center items-center gap-1">
+                            <Label>Have already an account? </Label>
+                            <Link className="underline" href="/auth/login">
+                                <Label>Log in</Label>
+                            </Link>
+                        </div>
                     </CardContent>
-                </Card>
+                </div>
             </form>
         </div>
     );

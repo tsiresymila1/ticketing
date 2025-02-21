@@ -8,7 +8,7 @@ export default async function Home() {
   if (session) {
     redirect("/admin");
   } else {
-    redirect("/auth");
+    redirect("/auth/login");
   }
   return null;
 }

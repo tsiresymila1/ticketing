@@ -2,11 +2,14 @@
 
 import FormError from "@/components/form-error";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -42,21 +45,23 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center">
-            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-4">
-                <Card className="min-w-[400px] py-8">
-                    <CardHeader>
-                        <CardTitle>Login</CardTitle>
-                        <CardDescription>Enter your credentials for login</CardDescription>
+        <div className="flex flex-col items-center justify-center w-full">
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-4 w-full">
+                <div className="py-4 w-full">
+                    <CardHeader className="text-center">
+                        <CardTitle className="text-2xl">Welcome back</CardTitle>
+                        <CardDescription>Login to your Ticket Inc account</CardDescription>
                     </CardHeader>
                     <CardContent className="w-auto flex flex-col gap-8">
                         {error && <FormError>{error}</FormError>}
-                        <div className="flex flex-col gap-4">
-                            <div>
+                        <div className="flex flex-col gap-6">
+                            <div className="flex flex-col gap-2">
+                                <Label>Email</Label>
                                 <Input {...register("email")} autoComplete="off" type="email" placeholder="Email" />
                                 {errors.email && <FormError>{errors.email.message}</FormError>}
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
+                                <Label>Password</Label>
                                 <div className="relative w-full">
                                     <Input {...register("password")} autoComplete="off" type={showPassword ? "text" : "password"} placeholder="Password" />
                                     <Button
@@ -73,8 +78,19 @@ export default function LoginForm() {
                             </div>
                         </div>
                         <Button type="submit">Login</Button>
+                        <div className="flex gap-4 justify-center items-center">
+                            <Separator className="flex-1" />
+                            <Label>OR</Label>
+                            <Separator className="flex-1" />
+                        </div>
+                        <div className="flex justify-center items-center gap-1">
+                            <Label>Don't have an account? </Label>
+                            <Link className="underline" href="/auth/register">
+                                <Label>Sign up</Label>
+                            </Link>
+                        </div>
                     </CardContent>
-                </Card>
+                </div>
             </form>
         </div>
     );

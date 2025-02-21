@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { AppChart } from "./components/app-chart";
 import DashItem from "./components/dash-item";
 import { RecentActivity } from "./components/recent-activity";
+import { Calendar } from "@/components/ui/calendar";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -13,8 +14,7 @@ export default async function DashboardPage() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold">Welcome, {session.user?.name}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-8 justify-center">
-        <DashItem />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 lg:grid-cols-3 gap-6 pt-8 justify-center">
         <DashItem />
         <DashItem />
         <DashItem />
@@ -42,6 +42,9 @@ export default async function DashboardPage() {
             <RecentActivity />
           </CardContent>
         </Card>
+      </div>
+      <div>
+        <Calendar mode="multiple" />
       </div>
     </div>
   );

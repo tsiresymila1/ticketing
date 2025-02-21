@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { ExternalLink } from "lucide-react";
 
 export default function DashItem() {
-    return <Card className="rounded-md px-6 py-4 flex-1 min-w-[300px]">
+    return <Card className="rounded-md px-6 py-4 flex-1 min-w-[300px] dark:bg-slate-900 bg-slate-50">
         <div className="flex flex-row justify-between">
             <div className="flex flex-col gap-2">
                 <Label className="text-md font-bold">Project</Label>

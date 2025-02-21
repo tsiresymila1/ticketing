@@ -7,7 +7,7 @@ export default function LogoutButton() {
   return (
     <DropdownMenuItem onClick={() => signOut({
       redirect: true,
-      callbackUrl: '/auth'
+      callbackUrl: '/auth/login'
     })
     }>
       Log out
