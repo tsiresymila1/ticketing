@@ -64,8 +64,8 @@ export default function RegisterForm() {
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-4 w-full max-w-96">
                 <div className=" py-8">
                     <CardHeader className="text-center">
-                        <CardTitle className="text-2xl">Register</CardTitle>
-                        <CardDescription>Enter your credentials for login</CardDescription>
+                        <CardTitle className="text-2xl">Create new account</CardTitle>
+                        <CardDescription>Enter your information for your AI Bot Scapper account </CardDescription>
                     </CardHeader>
                     <CardContent className="w-auto flex flex-col gap-8">
                         {error && <FormError>{error}</FormError>}
@@ -109,8 +109,8 @@ export default function RegisterForm() {
                         </div>
                         <div className="flex justify-center items-center gap-1">
                             <Label>Have already an account? </Label>
-                            <Link className="underline" href="/auth/login">
-                                <Label>Log in</Label>
+                            <Link className="underline cursor-pointer" href="/auth/login">
+                                <Label className="cursor-pointer">Log in</Label>
                             </Link>
                         </div>
                     </CardContent>

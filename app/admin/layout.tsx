@@ -6,8 +6,8 @@ import { AppSidebar } from "./components/app-sidebar";
 import AppBar from "./components/appbar";
 
 export const metadata: Metadata = {
-    title: "Ticketing",
-    description: "Ticketing app ",
+    title: "AI Bot Scapper",
+    description: "Turn any website to LLM-ready data",
 };
 
 export default function AppLayout({

@@ -18,7 +18,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 lg:grid-cols-3 gap-6 pt-8 justify-center">
         <DashItem title="Porject" count={stat.project} text={`You have currently ${stat.project} projects`} url="/admin/project" />
         <DashItem title="Users" count={stat.user} text={`There are  currently ${stat.project} users on your team`} url="/admin/users" />
-        <DashItem title="Activity" count={stat.activities.length} text={'This is not yet officla'} />
+        <DashItem title="Requests" count={stat.requests.length} text={`Reqests processed`} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 py-12 gap-12">
         <Card className="p-3 ">

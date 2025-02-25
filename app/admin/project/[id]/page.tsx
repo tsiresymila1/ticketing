@@ -1,7 +1,11 @@
 import { getprojectById } from "@/actions/project";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Copy, Pencil } from "lucide-react";
 import BackButton from "../../components/back-button";
 import DeleteProject from "../components/delete-project";
+import ProcessProjectDialog from "../components/process-project";
+import RequestStatsChart from "../components/request-chart";
 
 export default async function ProjectView({ params }: { params: { id: string } }) {
     const project = await getprojectById(params.id)
@@ -15,8 +19,48 @@ export default async function ProjectView({ params }: { params: { id: string } }
                 </div>
             </div>
             <div className="flex flex-row items-start gap-4">
+                <ProcessProjectDialog
+                    title="Edit project"
+                    description="Please, provide all info to update the project"
+                    defaultValues={{
+                        id: project?.id,
+                        title: project?.title ?? '',
+                        description: project?.description ?? ''
+                    }} >
+                    <Button>
+                        <Pencil />
+                        <Label className="hidden sm:block">Edit</Label>
+                    </Button>
+                </ProcessProjectDialog>
                 <DeleteProject projectId={params.id} />
             </div>
+        </div>
+        <div className="flex flex-col gap-0 px-8">
+            <div className="flex gap-4 items-center py-2 px-4">
+                <Label className="text-sm font-bold">Public key: </Label>
+                <div className="flex flex-row flex-1">
+                    <div className="rounded-md bg-muted px-4 py-3 flex items-center relative">
+                        <Label className="flex-1 me-8 select-text">{project?.publicKey ?? 'token'}</Label>
+                        <Button size="icon" variant="ghost" className="absolute end-1">
+                            <Copy />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            <div className="flex gap-4 items-center py-2 px-4">
+                <Label className="text-sm font-bold">Secret key: </Label>
+                <div className="flex flex-row flex-1">
+                    <div className="rounded-md bg-muted px-4 py-3 flex items-center relative">
+                        <Label className="flex-1 me-8 select-text">{project?.secretKey ?? 'token'}</Label>
+                        <Button size="icon" variant="ghost" className="absolute end-1">
+                            <Copy />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className="flex flex-col p-8">
+            <RequestStatsChart projectId={params.id} />
         </div>
     </div>
 }

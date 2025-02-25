@@ -50,7 +50,7 @@ export default function LoginForm() {
                 <div className="py-4 w-full">
                     <CardHeader className="text-center">
                         <CardTitle className="text-2xl">Welcome back</CardTitle>
-                        <CardDescription>Login to your Ticket Inc account</CardDescription>
+                        <CardDescription>Login to your AI Bot Scapper account</CardDescription>
                     </CardHeader>
                     <CardContent className="w-auto flex flex-col gap-8">
                         {error && <FormError>{error}</FormError>}
@@ -84,9 +84,9 @@ export default function LoginForm() {
                             <Separator className="flex-1" />
                         </div>
                         <div className="flex justify-center items-center gap-1">
-                            <Label>Don't have an account? </Label>
-                            <Link className="underline" href="/auth/register">
-                                <Label>Sign up</Label>
+                            <Label>Don&apos;t have an account? </Label>
+                            <Link className="underline cursor-pointer" href="/auth/register">
+                                <Label className="cursor-pointer">Sign up</Label>
                             </Link>
                         </div>
                     </CardContent>

@@ -1,5 +1,5 @@
 "use client"
-import { Briefcase, ChartArea, HelpCircle, Home, KanbanSquareDashed, LucideIcon, Settings, Users2 } from "lucide-react"
+import { Bot, Briefcase, ChartArea, HelpCircle, Home, LucideIcon, Settings, Users2 } from "lucide-react"
 
 import { Label } from "@/components/ui/label"
 import {
@@ -75,13 +75,12 @@ const items: SideMenuType[] = [
 
 export function AppSidebar() {
     const pathname = usePathname()
-    console.log("pathname::", pathname)
     return (
         <Sidebar>
             <SidebarHeader className="py-4 ps-8">
                 <div className="flex flex-row items-center gap-4">
-                    <KanbanSquareDashed size={20} />
-                    <Label className="font-bold text-md">Ticket Inc</Label>
+                    <Bot size={20} />
+                    <Label className="font-bold text-md">AI Bot Scapper</Label>
                 </div>
             </SidebarHeader>
             <SidebarContent className="px-4 mt-4">

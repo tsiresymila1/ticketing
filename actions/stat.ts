@@ -16,8 +16,8 @@ export default async function getStats() {
     },
   });
   const user = await prisma.user.count();
-  const activities = await prisma.activity.findMany({
+  const requests = await prisma.request.findMany({
     skip: 1,
   });
-  return { project, user, activities };
+  return { project, user, requests };
 }

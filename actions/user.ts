@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { getSession } from "./session";
+import { checkSession } from "./session";
 
 export async function listUsers() {
-  const session = await getSession();
+  const session = await checkSession();
   if (!session?.user) return [];
   return await prisma.user.findMany();
 }

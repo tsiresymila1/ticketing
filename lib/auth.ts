@@ -49,6 +49,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; 
       }
       return token;
     },
