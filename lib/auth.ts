@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -22,9 +22,9 @@ export const authOptions: AuthOptions = {
 
         if (!user) return null;
 
-        const isValid =  await bcrypt.compare(
+        const isValid = await bcrypt.compare(
           credentials.password,
-          user.password,
+          user.password
         );
 
         console.log(
@@ -44,5 +44,19 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/auth/login",
     signOut: "/auth/login",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
 };

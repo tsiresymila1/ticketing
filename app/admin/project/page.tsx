@@ -1,14 +1,16 @@
+import { listProject } from "@/actions/project";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toggle } from "@/components/ui/toggle";
-import { ExternalLink, Plus } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import AddProjectDialog from "./components/add-project";
 
-export default function Project() {
+export default async function Project() {
+    const projects = await listProject()
     return <div className="w-full px-8 gap-8">
         <div className="sm:px-8 py-8 flex flex-row justify-between">
             <div className=" flex-1">
@@ -16,15 +18,7 @@ export default function Project() {
                 <Label className="text-muted-foreground">You can find here your list of project</Label>
             </div>
             <div className="flex flex-row">
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button>
-                            <Plus />
-                            <Label className="hidden sm:block">Add project</Label>
-                        </Button>
-                    </DialogTrigger>
-                    <AddProjectDialog />
-                </Dialog>
+                <AddProjectDialog />
             </div>
         </div>
         <div className="sm:px-8 gap-4">
@@ -39,22 +33,33 @@ export default function Project() {
                 </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
-                {Array.from(Array(20).keys()).map((e) => (
-                    <Link href={`/admin/project/${e}`} key={`project-item-${e}`}>
+                {projects.map((project, e) => (
+                    <Link href={`/admin/project/${project.id}`} key={`project-item-${project.id}`}>
                         <Card className="rounded-md cursor-pointer hover:bg-accent dark:bg-slate-900 bg-slate-50 ">
                             <CardHeader>
-                                <CardTitle>Test projet {e}</CardTitle>
-                                <CardDescription>This is a test of project...</CardDescription>
+                                <CardTitle>{project.title}</CardTitle>
+                                <CardDescription>{project.description}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex justify-between">
-                                    <div>
-                                        <Label className="text-xl">12 </Label>
-                                        <Label>users iieisisf sfsi</Label>
-                                    </div>
-                                    <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon">
                                         <ExternalLink />
                                     </Button>
+                                    <div className="relative flex items-center">
+                                        {[project.user, ...project.collaborators].map((user, index) => (
+                                            <div
+                                                key={index}
+                                                className={`w-7 h-7 rounded-full bottom-1 overflow-hidden ${index !== 0 ? "-ml-4" : ""}`}
+                                                style={{ zIndex: ([project.user, ...project.collaborators]).length - index }} // Ensures correct stacking order
+                                            >
+                                                <Avatar className="w-7 h-7">
+                                                    <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
+                                                    <AvatarFallback className="text-xs">{user.name?.toUpperCase().slice(0,2)}</AvatarFallback>
+                                                </Avatar>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    
                                 </div>
                             </CardContent>
                         </Card>

@@ -1,5 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { RecentActivity } from "../components/recent-activity";
 import { ListUsers } from "./components/list-users";
 
 export default function PageUsers() {
