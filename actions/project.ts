@@ -1,6 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { generateApiKeys } from "@/lib/token";
+import { generateApiKey } from "@/lib/token";
 import { revalidatePath } from "next/cache";
 import { createActivity } from "./activity";
 import { checkSession } from "./session";
@@ -9,6 +9,8 @@ export type ProjectFormData = {
   title: string;
   description?: string;
   id?: string;
+  isSpa?: boolean;
+  url: string;
 };
 
 export async function listProject() {
@@ -33,10 +35,9 @@ export async function listProject() {
 
 export async function processProject(data: ProjectFormData) {
   const session = await checkSession();
-  if (!session?.user) {
+  if (!session?.user.id) {
     return null;
   }
-  const keys = await generateApiKeys();
   const res = await prisma.project.upsert({
     where: {
       id: data.id ?? "",
@@ -44,13 +45,16 @@ export async function processProject(data: ProjectFormData) {
     create: {
       title: data.title,
       description: data.description,
+      url: data.url,
+      token: generateApiKey(),
       userId: session!.user.id,
-      publicKey: keys.publicKey,
-      secretKey: keys.secretKey,
+      isSpa: data.isSpa
     },
     update: {
       title: data.title,
       description: data.description,
+      url: data.url,
+      isSpa: data.isSpa
     },
   });
   if (res.id) {

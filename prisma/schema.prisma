@@ -60,8 +60,9 @@ model Project {
   userId        String
   title         String
   description   String?
-  publicKey     String?
-  secretKey     String?
+  token         String?
+  url           String
+  isSpa         Boolean?  @default(false)
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

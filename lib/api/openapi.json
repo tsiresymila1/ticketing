@@ -1,0 +1,234 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "AI Agent Scapper",
+        "version": "1.0",
+        "description": "Turn website into LLM-ready data"
+    },
+    "paths": {
+        "\/scape": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "status",
+                                        "success"
+                                    ],
+                                    "properties": {
+                                        "status": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ],
+                                            "title": "Status"
+                                        },
+                                        "success": {
+                                            "title": "Success",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "title": "StatusResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Scape"
+                ],
+                "summary": "Scrape",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "token",
+                                    "is_spa",
+                                    "url"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "title": "Token",
+                                        "type": "string"
+                                    },
+                                    "is_spa": {
+                                        "title": "Is Spa",
+                                        "type": "boolean"
+                                    },
+                                    "url": {
+                                        "title": "Url",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "CreateScapeDto"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "\/scape\/{token}\/start": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "status",
+                                        "success"
+                                    ],
+                                    "properties": {
+                                        "status": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ],
+                                            "title": "Status"
+                                        },
+                                        "success": {
+                                            "title": "Success",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "title": "StatusResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Scape"
+                ],
+                "summary": "Start",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Route path",
+                        "required": true,
+                        "allowEmptyValue": false
+                    }
+                ]
+            }
+        },
+        "\/scape\/{token}\/status": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "status",
+                                        "success"
+                                    ],
+                                    "properties": {
+                                        "status": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ],
+                                            "title": "Status"
+                                        },
+                                        "success": {
+                                            "title": "Success",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "title": "StatusResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Scape"
+                ],
+                "summary": "Status",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Route path",
+                        "required": true,
+                        "allowEmptyValue": false
+                    }
+                ]
+            }
+        },
+        "\/chat": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application\/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Chat",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "session_id",
+                                    "content",
+                                    "token"
+                                ],
+                                "properties": {
+                                    "session_id": {
+                                        "title": "Session Id",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "title": "Content",
+                                        "type": "string"
+                                    },
+                                    "token": {
+                                        "title": "Token",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "CreateChatDto"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {},
+        "securitySchemes": {}
+    }
+}
